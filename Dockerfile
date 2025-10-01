@@ -1,14 +1,14 @@
 # Use Node.js image
-FROM node:20-alpine
+FROM node:20-alpine AS builder
 
 # Set working directory
-WORKDIR /app
+WORKDIR /builder
 
-# Copy package.json and lock file first
-COPY package*.json ./
+# Copy package.json and package-lock.json to the working directory
+COPY package.json package-lock.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies as per lock file without making updates
+RUN npm install --frozen-lockfile
 
 # Copy the rest of the project files
 COPY . .
